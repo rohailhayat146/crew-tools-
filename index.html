@@ -7,14 +7,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@700&family=Playfair+Display:ital,wght@1,600&family=Orbitron:wght@700&family=Permanent+Marker&display=swap" rel="stylesheet">
     <script>
-      // Shim process.env for browser compatibility in production/Vercel
+      // Shim process.env for browser compatibility
+      // Vercel injects environment variables, but we need them accessible on the window object for pure client-side scripts
       window.process = window.process || { env: {} };
+      if (!window.process.env.API_KEY) {
+        // This allows the app to fallback or wait for injected keys if necessary
+        console.warn("API_KEY not found in process.env. Ensure it is set in Vercel project settings.");
+      }
     </script>
     <style>
       body {
         font-family: 'Inter', sans-serif;
       }
-      /* Custom scrollbar for webkit */
       ::-webkit-scrollbar {
         width: 8px;
         height: 8px;
@@ -29,7 +33,6 @@
       ::-webkit-scrollbar-thumb:hover {
         background: #94a3b8; 
       }
-      /* Pattern for transparent background */
       .bg-checkerboard {
         background-color: #f0f0f0;
         background-image:
@@ -56,5 +59,7 @@
 </head>
   <body class="bg-blue-50 text-slate-900 antialiased">
     <div id="root"></div>
+    <!-- The missing piece: loading the application logic -->
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>
